@@ -12,16 +12,34 @@ namespace todolist.Controllers
     public class ToDoController : Controller
     {
         private readonly ToDoDbContext context;
-        public ToDoController(ToDoDbContext context)
+        public ToDoController(ToDoDbContext _context)
         {
-            this.context = context;
+            context = _context;
         }
-        public async Task<ActionResult> Index()
+         public IActionResult Index() {
+            IEnumerable<ToDoList> obList = context.ToDoList;
+            return View(obList);
+        }
+        public IActionResult Create()
         {
-            IQueryable<ToDoList> items = from i in context.ToDoList orderby i.Id select i;
-            List<ToDoList> todolist = await items.ToListAsync();
-            return View(todolist);
+         
+            return View();
         }
-        public IActionResult Create() => View();
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Create(ToDoList _obj)
+        {
+            context.ToDoList.Add(_obj);
+            context.SaveChanges();
+
+            return RedirectToAction("Index");
+        }
+
+
+
+
+
+
+
     }
 }
