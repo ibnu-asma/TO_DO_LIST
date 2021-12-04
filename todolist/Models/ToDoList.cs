@@ -14,7 +14,7 @@ namespace todolist.Models
         [DisplayName("your Task")]
         public string YourTask { set; get; }
         [DisplayName("Is Done")]
-        public bool IsDone { get; set; }
+        public int IsDone { get; set; }
        
     }
 }
